@@ -4,8 +4,9 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266WiFiMulti.h>
 #include <ESP8266HTTPClient.h>
-#include <WiFiClient.h>
-#include <WiFiClientSecureBearSSL.h>
+#include<WiFiClient.h>
+
+
 
 // Fingerprint for demo URL, expires on June 2, 2021, needs to be updated well before this date
 const uint8_t fingerprint[20] = {0x72, 0x01, 0xe1, 0x17, 0x23, 0xe8, 0xaf, 0xd3, 0xd6, 0x91, 0x08, 0xca, 0x87, 0x98, 0x81, 0xa7, 0x98, 0xa6, 0x85, 0x08};
@@ -17,7 +18,7 @@ MFRC522 mfrc522(SS_PIN, RST_PIN);  // Instance of the class
 MFRC522::MIFARE_Key key;  
 ESP8266WiFiMulti WiFiMulti;
 MFRC522::StatusCode status;      
-
+WiFiClient client;
 /* Be aware of Sector Trailer Blocks */
 int blockNum = 2;  
 
@@ -117,7 +118,7 @@ void loop()
 HTTPClient http;
 postData = "Name=" + data2 ;
 
-http.begin("http://192.168.1.45/nodemcu/dbwrite.php");              // Connect to host where MySQL databse is hosted
+http.begin(client,"http://192.168.1.45/nodemcu/dbwrite.php");              // Connect to host where MySQL databse is hosted
 http.addHeader("Content-Type", "application/x-www-form-urlencoded");            //Specify content-type header
 
   
